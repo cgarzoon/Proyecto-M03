@@ -16,4 +16,4 @@ aula222, primera planta  aula pequeña  sin ventanas es la aula de reuniones de 
 aula12, cuarta planta aula muy amplia con muy buena ventilacion es el gimnasio, 30, false, 0, false, false
 aula340, tercera planta aula muy amplia que dispone de diferentes instrumentos de musica, 35, true, 1, true, 1, true
 aula1, primera planta aula muy amplia que dispone una gran variedad de libros bliblioteca, 60, true, 3, false, true
-aula 46, segunda planta aula media es la de castigo, false, 0, false, false    
+aula46, segunda planta aula media es la de castigo,20 , false, 0, false, false    
