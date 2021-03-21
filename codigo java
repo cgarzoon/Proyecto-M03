@@ -1,0 +1,86 @@
+public static void main(String[] args) {
+        //Creamos el fichero
+        File ficheroAulas = new File("README.txt");
+
+        //comprobamos que el archivo existe
+        //System.out.println(ficheroAulas.exists()); 
+        
+        //llamamos al lector del fichero
+        lectorFicheros(ficheroAulas);
+    }
+
+    /**
+     * Funcion en la que creamos el lector de archivo que nos permitira leer el
+     * contenido el objeto fichero
+     *
+     * @param f
+     */
+    private static void lectorFicheros(File f) {
+
+        try {
+
+            Scanner lectorFichero = new Scanner(f);
+
+            while (lectorFichero.hasNextLine()) {
+                String linea = lectorFichero.nextLine();
+
+                //describimos las aulas introducidas mediante el objeto fichero
+                describeAulas(linea);
+                
+            }
+
+        } catch (Exception ex) {
+
+            System.out.println("Error al abrir o leer el archivo");
+
+        }
+    }
+
+    /**
+     * Funcion que describira la informacion de las aulas del fichero
+     *
+     * @param l
+     */
+    private static void describeAulas(String l) {
+        String[] atributos = l.split(",");
+        for (int i = 0; i < atributos.length; i++) {
+            switch (i) {
+                case 0:
+                    System.out.println("Nombre del aula: " + atributos[i]);
+                    break;
+                case 1:
+                    System.out.println("Descripción del aula: " + atributos[i]);
+                    break;
+                case 2:
+                    System.out.println("Capacidad máxima de alumnos: " + atributos[i] + " alumnos");
+                    break;
+                case 3:
+                    String bool = atributos[i].toUpperCase();
+                    if ("TRUE".equals(bool)) {
+                        System.out.println("Dispone de ordenadores el aula: Si");
+                    } else {
+                        System.out.println("Dispone de ordenadores el aula: No");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Numero de ordenadores en el aula: " + atributos[i] + " ordenadores");
+                    break;
+                case 5:
+                    String bool2 = atributos[i].toUpperCase();
+                    if ("TRUE".equals(bool2)) {
+                        System.out.println("Dispone de proyector el aula: Si");
+                    } else {
+                        System.out.println("Dispone de proyector el aula: No");
+                    }
+                    break;
+                case 6:
+                    String bool3 = atributos[i].toUpperCase();
+                    if ("TRUE".equals(bool3)) {
+                        System.out.println("Aula insonorizada: Si\n");
+                    } else {
+                        System.out.println("Aula insonorizada: No\n");
+                    }
+                    break;
+            }
+        }
+    }
