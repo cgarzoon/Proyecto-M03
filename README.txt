@@ -1,5 +1,3 @@
-Proyecto M03
-//21-03
 aula245, planta baja sin ventanas, 25, true, 15, true, true
 aula251, primera planta con ventanas, 30, true, 30, true, false
 aula252, primera planta con ventanas, 25, true, 25, true, false
@@ -14,6 +12,6 @@ aula154, planta baja con ventanas y ventilacion taller, 15, false, 0, false, tru
 aula155, segunda planta sin ventanas con ventilacion sala de proyecciones, 40, true, 2, true, true
 aula222, primera planta  aula pequeña  sin ventanas es la aula de reuniones de docentes, 15, false, 0, true, true
 aula12, cuarta planta aula muy amplia con muy buena ventilacion es el gimnasio, 30, false, 0, false, false
-aula340, tercera planta aula muy amplia que dispone de diferentes instrumentos de musica, 35, true, 1, true, 1, true
+aula340, tercera planta aula muy amplia que dispone de diferentes instrumentos de musica, 35, true, 1, true, true
 aula1, primera planta aula muy amplia que dispone una gran variedad de libros bliblioteca, 60, true, 3, false, true
 aula46, segunda planta aula media es la de castigo,20 , false, 0, false, false    
