@@ -16,3 +16,4 @@ aula12,tercera planta aula muy amplia con muy buena ventilacion es el gimnasio,3
 aula340,tercera planta aula muy amplia que dispone de diferentes instrumentos de musica,35,true,1,true,true,
 aula1,primera planta aula muy amplia que dispone una gran variedad de libros bliblioteca,60,true,3,false,true,
 aula46,segunda planta aula media es la de castigo,20,false,0,false,false,    
+HOLA
