@@ -1,12 +1,11 @@
 /*
 PROYECTO M03
-* * * SPRINT 1 * * *
 
- */
+*/
 package gestionaulas;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  *
@@ -17,35 +16,78 @@ public class GestionAulas {
     public static Scanner sc = new Scanner(System.in);
 
     static final int atributosAula = 7;
-
+    
+    static ArrayList<Usuario> usuarios; 
+    
+    
     public static void main(String[] args) {
+        
+        cargarUsuarios();
+        
+        if(usuarios.isEmpty()){
+            crearUsuarioInicial();
+        }
+        
+        boolean usuarioFound = false;
+        //damos la bienvenida al usuario y le pedimos que se logueen
+        do{
+            System.out.print("Bienvenido al programa de gestión de aulas CJK\n"
+                + "Introduce tus datos\n"
+                + "Username: ");
+        String nomUser = sc.nextLine();
+        System.out.print("Password: ");
+        String passw = sc.nextLine();
+        }while(!usuarioFound);
+        
+        
+        
+        
         //Creamos el fichero
         File ficheroAulas = new File("classroom.txt");
 
-        //comprobamos que el archivo existe
-        //System.out.println(ficheroAulas.exists());
+
+
         //llamamos a la funcion lector del fichero
         lectorFicheros(ficheroAulas);
+        
+        
+        
+        
+/*
+        //creamos un interruptor para permitir al usuario acceder al menú cuantas
+        //veces precise
+        boolean salir = false;
+        do {
+            System.out.print("\n****** M E N Ú ******\n"
+                    + "1. Añade una línea\n"
+                    + "2. Modifica una línea\n"
+                    + "3. Elimina una línea\n"
+                    + "4. Salir\n"
+                    + "Escoge una opción: ");
+            int opcion = sc.nextInt() - 1;
 
-        System.out.print("****** M E N Ú ******\n"
-                + "1. Añade una línea\n"
-                + "2. Modifica una línea\n"
-                + "3. Elimina una línea\n"
-                + "Escoge tu opción: ");
-        int opcion = sc.nextInt();
-
-        switch (opcion) {
-            case 0:
-                System.out.println("Has escogido añadir una nueva aula. A  continuación escribe la información de la nueva aula");
-                addLinea(ficheroAulas);
-                break;
-            case 1:
-                System.out.println("Has escgodio modificar la información de un aula.");
-                modificaLinea(ficheroAulas);
-                break;
-            case 2:
-
-        }
+            switch (opcion) {
+                case 0:
+                    System.out.println("\nHas escogido añadir una nueva aula. A  continuación escribe la información de la nueva aula");
+                    addLinea(ficheroAulas);
+                    break;
+                case 1:
+                    System.out.println("\nHas escgodio modificar la información de un aula.");
+                    modificaLinea(ficheroAulas);
+                    break;
+                case 2:
+                    System.out.println("\nHas escogido eliminar un aula de la lista.");
+                    eliminaLinea(ficheroAulas);
+                    break;
+                case 3:
+                    System.out.println("\nSaliendo del menú.\n"
+                            + "Gracias por usar nuestro programa :D");
+                    salir = true;
+                    break;
+            }
+        } while (!salir);
+*/
+        
     }
 
     /**
@@ -69,7 +111,7 @@ public class GestionAulas {
                 String linea = lectorFichero.nextLine();
 
                 //describimos las aulas introducidas mediante el objeto fichero
-                describeAulas(linea);
+                //describeAulas(linea);
 
             }
             //al acabar siempre debemos cerrar el lector
@@ -178,7 +220,7 @@ public class GestionAulas {
         d5 = d5.toUpperCase();
         d6 = d6.toUpperCase();
 
-        // convertimos en String linea las conversiones
+        // convertimos en String linea las respuestas 
         String linea = d1 + "," + d2 + "," + d3 + "," + d4 + "," + d7 + "," + d5 + "," + d6;
 
         try {
@@ -186,7 +228,7 @@ public class GestionAulas {
             // El true al final indica que escribiremos al final del fichero añadiendo texto
             FileWriter writer = new FileWriter(f, true);
 
-            writer.write(linea);
+            writer.write(linea+"\n");
 
             writer.close();
 
@@ -204,9 +246,12 @@ public class GestionAulas {
      * @param f
      */
     public static void modificaLinea(File f) {
+        Scanner lect = new Scanner(System.in);
+        ArrayList<String> lineas = new ArrayList<>();
 
         System.out.println("Introduce el nombre del aula que deseas modificar: ");
-        String nombreAula = sc.nextLine();
+        String nombreAula;
+        nombreAula = lect.nextLine().toUpperCase();
 
         try {
             //inicializamos el lector del fichero
@@ -216,63 +261,7 @@ public class GestionAulas {
             //siga haciendo su funcion
             while (lectorFichero.hasNextLine()) {
 
-                //separamos las lineas del fichero de 1 en 1 
-                String linea = lectorFichero.nextLine();
-
-                //dividimos la informacion del aula en sus diferentes atributos
-                String[] atributos = linea.split(",");
-
-                //si el atributo[0] que es el nombre coincide con el nombere que nos describe el usuario
-                //empezara la función a permitir la modificacion
-                if (atributos[0] == nombreAula) {
-
-                    //mostramos la información que hay actualmente sobre el aula
-                    describeAulas(linea);
-
-                    try {
-
-                        //iniciamos el escritor de ficheros
-                        FileWriter writer = new FileWriter(f);
-
-                        //y pedimos al usuario toda la nueva información que iremos guardando
-                        //en un string
-                        System.out.println("A continuación escribe la nueva información del " + atributos[0]);
-
-                        System.out.println("Nombre del aula: ");
-                        String nuevaLinea = sc.nextLine();
-                        nuevaLinea.concat(",");
-
-                        System.out.println("Descripción del aula: ");
-                        nuevaLinea.concat(sc.nextLine());
-                        nuevaLinea.concat(",");
-
-                        System.out.println("Capacidad máxima de alumnos: ");
-                        nuevaLinea.concat(sc.nextLine());
-                        nuevaLinea.concat(",");
-
-                        System.out.println("Dispone de ordenadores el aula (si/no): ");
-                        nuevaLinea.concat(sc.nextLine());
-                        nuevaLinea.concat(",");
-
-                        System.out.println("Número de ordenadores: ");
-                        nuevaLinea.concat(sc.nextLine());
-                        nuevaLinea.concat(",");
-
-                        System.out.println("Dispone de proyector el aula (Si/No): ");
-                        nuevaLinea.concat(sc.nextLine());
-                        nuevaLinea.concat(",");
-
-                        System.out.println("Aula insonorizada (Si/No): ");
-                        nuevaLinea.concat(sc.nextLine());
-
-                        //reescribimos la respectiva línea con la nueva línea de información
-                        writer.write(nuevaLinea);
-                        writer.close();
-
-                    } catch (Exception e) {
-                        System.out.println("Error al crear/reescribir el fichero");
-                    }
-                }
+                lineas.add(lectorFichero.nextLine());
 
             }
             //al acabar siempre debemos cerrar el lector
@@ -283,6 +272,64 @@ public class GestionAulas {
             System.out.println("Error al abrir o leer el archivo");
 
         }
+
+        try {
+
+            //iniciamos el escritor de ficheros
+            FileWriter writer = new FileWriter(f);
+
+            for (String linea : lineas) {
+
+                String[] atributos = linea.split(",");
+                String aula = atributos[0].toUpperCase();
+
+                if (nombreAula.equals(aula)) {
+                    //pedimos al usuario toda la nueva información que iremos guardando
+                    //en un string que sustituirá finalmente la antigua línea
+                    System.out.println("A continuación escribe la nueva información del " + nombreAula);
+
+                    System.out.println("Nombre del aula: ");
+                    String r1 = lect.nextLine();
+
+                    System.out.println("Descripción del aula: ");
+                    String r2 = lect.nextLine();
+
+                    System.out.println("Capacidad máxima de alumnos: ");
+                    String r3 = lect.nextLine();
+
+                    System.out.println("Dispone de ordenadores el aula (si/no): ");
+                    String r4 = lect.nextLine();
+
+                    System.out.println("Número de ordenadores: ");
+                    String r5 = lect.nextLine();
+
+                    System.out.println("Dispone de proyector el aula (Si/No): ");
+                    String r6 = lect.nextLine();
+
+                    System.out.println("Aula insonorizada (Si/No): ");
+                    String r7 = lect.nextLine();
+
+                    //creamos la nueva linea de informacion cobinando las anteriores respuestas
+                    //y concatenandolas con una coma tras cada respuesta
+                    String nuevaLinea = r1 + "," + r2 + "," + r3 + "," + r4 + "," + r5 + "," + r6 + "," + r7;
+
+                    //reescribimos la respectiva línea con la nueva línea de información
+                    writer.write(nuevaLinea + "\n");
+
+                } else {
+
+                    writer.write(linea + "\n");
+
+                }
+
+            }
+
+            //cerramos siempre el escritor de fichero al terminar su uso
+            writer.close();
+
+        } catch (Exception e) {
+            System.out.println("Error al crear/reescribir el fichero");
+        }
     }
 
     /**
@@ -292,6 +339,7 @@ public class GestionAulas {
      * @param ficheroAulas
      */
     private static void eliminaLinea(File f) {
+        Scanner lector = new Scanner(System.in);
 
         // Array para guardar todas las líneas leídas del fichero
         ArrayList<String> lineas = new ArrayList<>();
@@ -321,17 +369,47 @@ public class GestionAulas {
             for (String linea : lineas) {
 
                 String[] atributos = linea.split(",");
+                String aula = atributos[0].toUpperCase();
 
-                if (!NombreAula.equals(atributo[0].toUpperCase())) {
-                    writer.write("linea borrada" + "\n");
+                if (!nombreAula.equals(aula)) {
+                    writer.write(linea + "\n");
                 }
 
             }
 
+            writer.close();
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
         }
 
+    }
+
+    private static void cargarUsuarios() {
+        
+        usuarios = new ArrayList<>();
+        
+        try {
+            
+            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
+            
+            usuarios = (ArrayList<Usuario>) fichero.readObject();
+            
+        }catch(Exception e){
+            
+            System.out.println("Ha ocurrido un error al guardar el fichero");
+        
+        }
+    }
+
+    /**
+     * Funcion que se ejecutara en caso de que no hayan usuarios creados en el 
+     * ArrayList de usuarios
+     */
+    private static void crearUsuarioInicial() {
+        usuarios.set(0, new Usuario());
+        usuarios.get(0).name = "Carlos";
+        usuarios.get(0).password = "1234asd";
+        usuarios.get(0).role = "Admin";
     }
 
 }

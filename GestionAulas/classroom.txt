@@ -1,4 +1,4 @@
-aula245,planta baja sin ventanas esta aula dispone con un conjunto de altavoces es la de danza,25,true,15,true,true
+aula245,planta baja sin ventanas esta aula dispone con un conjunto de altavoces es la de danza,30,si,30,si,si
 aula251,primera planta con ventanas aula muy amplia que  dispone con un juego de cine ,30,true,30,true,false
 aula252,primera planta con ventanas aula media que dispone con materiales de arte es la de plastica,25,true,25,true,false
 aula253,segunda planta con ventanas aula media que dispone con pequeños puestos de estudio,25,true,25,true,false
