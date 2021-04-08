@@ -6,6 +6,7 @@ PROYECTO M03
 package gestionaulas;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
