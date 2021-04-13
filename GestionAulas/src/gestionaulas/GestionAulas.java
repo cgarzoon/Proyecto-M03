@@ -1,16 +1,11 @@
 /*
 PROYECTO M03
 
-*/
+ */
 package gestionaulas;
 
 import java.io.*;
-<<<<<<< HEAD
 import java.util.*;
-=======
-import java.util.ArrayList;
-import java.util.Scanner;
->>>>>>> main
 
 /**
  *
@@ -21,78 +16,48 @@ public class GestionAulas {
     public static Scanner sc = new Scanner(System.in);
 
     static final int atributosAula = 7;
-    
-    static ArrayList<Usuario> usuarios; 
-    
-    
+
+    static ArrayList<Usuario> usuarios;
+
     public static void main(String[] args) {
-        
+
+        //cargamos la lista de usuarios y en caso de no existir o estar vacía indicaremos
+        //que se cree un primer usuario de manera automatica
         cargarUsuarios();
-        
-        if(usuarios.isEmpty()){
+        if (usuarios.isEmpty()) {
             crearUsuarioInicial();
         }
-        
-        boolean usuarioFound = false;
-        //damos la bienvenida al usuario y le pedimos que se logueen
-        do{
-            System.out.print("Bienvenido al programa de gestión de aulas CJK\n"
-                + "Introduce tus datos\n"
-                + "Username: ");
-        String nomUser = sc.nextLine();
-        System.out.print("Password: ");
-        String passw = sc.nextLine();
-        }while(!usuarioFound);
-        
-        
-        
-        
+
         //Creamos el fichero
         File ficheroAulas = new File("classroom.txt");
 
+        //damos la bienvenida al programa
+        System.out.println("Bienvenidos al programa de gestión de aulas CJK");
 
-
-        //llamamos a la funcion lector del fichero
-        lectorFicheros(ficheroAulas);
-        
-        
-        
-        
-/*
-        //creamos un interruptor para permitir al usuario acceder al menú cuantas
-        //veces precise
+        //menu inicial 
+        int opcion = 0;
         boolean salir = false;
         do {
-            System.out.print("\n****** M E N Ú ******\n"
-                    + "1. Añade una línea\n"
-                    + "2. Modifica una línea\n"
-                    + "3. Elimina una línea\n"
-                    + "4. Salir\n"
-                    + "Escoge una opción: ");
-            int opcion = sc.nextInt() - 1;
-
+            System.out.println("\n1. Acceder a cuenta"
+                    + "\n2. Salir"
+                    + "\nQue desas hacer: ");
+            opcion = sc.nextInt() - 1;
             switch (opcion) {
                 case 0:
-                    System.out.println("\nHas escogido añadir una nueva aula. A  continuación escribe la información de la nueva aula");
-                    addLinea(ficheroAulas);
+                    String rol;
+                    rol = loginUser();
+                    if (rol.equals("Admin")) {
+                        menuAdmin();
+                    } else if (rol.equals("Teacher")) {
+                        menuTeacher(ficheroAulas);
+                    }
                     break;
                 case 1:
-                    System.out.println("\nHas escgodio modificar la información de un aula.");
-                    modificaLinea(ficheroAulas);
-                    break;
-                case 2:
-                    System.out.println("\nHas escogido eliminar un aula de la lista.");
-                    eliminaLinea(ficheroAulas);
-                    break;
-                case 3:
-                    System.out.println("\nSaliendo del menú.\n"
-                            + "Gracias por usar nuestro programa :D");
                     salir = true;
                     break;
             }
         } while (!salir);
-*/
-        
+
     }
 
     /**
@@ -117,7 +82,6 @@ public class GestionAulas {
 
                 //describimos las aulas introducidas mediante el objeto fichero
                 //describeAulas(linea);
-
             }
             //al acabar siempre debemos cerrar el lector
             lectorFichero.close();
@@ -233,7 +197,7 @@ public class GestionAulas {
             // El true al final indica que escribiremos al final del fichero añadiendo texto
             FileWriter writer = new FileWriter(f, true);
 
-            writer.write(linea+"\n");
+            writer.write(linea + "\n");
 
             writer.close();
 
@@ -389,32 +353,134 @@ public class GestionAulas {
 
     }
 
+    /**
+     * Funcion que cargara la lista de usuarios
+     */
     private static void cargarUsuarios() {
-        
-        usuarios = new ArrayList<>();
-        
+
+        usuarios = new ArrayList<Usuario>();
+
         try {
-            
+
             ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
-            
+
             usuarios = (ArrayList<Usuario>) fichero.readObject();
-            
-        }catch(Exception e){
-            
+
+        } catch (Exception e) {
+
             System.out.println("Ha ocurrido un error al guardar el fichero");
-        
+
         }
     }
 
     /**
-     * Funcion que se ejecutara en caso de que no hayan usuarios creados en el 
+     * Funcion que se ejecutara en caso de que no hayan usuarios creados en el
      * ArrayList de usuarios
      */
     private static void crearUsuarioInicial() {
-        usuarios.set(0, new Usuario());
-        usuarios.get(0).name = "Carlos";
-        usuarios.get(0).password = "1234asd";
-        usuarios.get(0).role = "Admin";
+        Usuario user = new Usuario();
+        user.name = "Admin1";
+        user.password = "1234";
+        user.role = "Admin";
+        usuarios.add(user);
+    }
+
+    private static String loginUser() {
+        Scanner lector = new Scanner(System.in);
+        boolean usuarioFound = false;
+        String rol = "";
+        //pedimos al usuario que introduzca sus datos en caso de no coincidir con ninguno
+        //dentro del arraylist de usuarios le indicaremos que ha introducido mal los datos
+        do {
+            System.out.print("Introduce tus datos\n"
+                    + "Username: ");
+            String nomUser = lector.nextLine();
+            System.out.print("Password: ");
+            String passw = lector.nextLine();
+
+            for (Usuario usuario : usuarios) {
+                if (nomUser.equals(usuario.name) && passw.equals(usuario.password)) {
+                    usuarioFound = true;
+                    rol = usuario.role;
+                }
+            }
+
+            if (!usuarioFound) {
+                System.out.println("Nombre de usuario o contraseña incorrectos");
+            }
+        } while (!usuarioFound);
+
+        return rol;
+    }
+
+    private static void menuAdmin() {
+        int opcion = 0;
+        boolean salir = false;
+        System.out.println("\n-----MENÚ ADMINISTRADORES-----");
+        do {
+            System.out.println("1. Listar usuarios"
+                    + "\n2. Crear usuario"
+                    + "\n3. Modificar usuario"
+                    + "\n4. Eliminar usuario"
+                    + "\n5. Salir");
+            opcion = sc.nextInt() - 1;
+            switch (opcion) {
+                case 0:
+                    //funcion listar usuarios
+                    System.out.println("listar usuarios");
+                    break;
+                case 1:
+                    System.out.println("crear usuario");
+                    break;
+                case 2:
+                    System.out.println("modificar usuario");
+                    break;
+                case 3:
+                    System.out.println("eliminar usuario");
+                    break;
+                case 4:
+                    System.out.println("Saliendo del menú de administradores\n");
+                    salir = true;
+                    break;
+            }
+        } while (!salir);
+
+    }
+
+    private static void menuTeacher(File f) {
+        int opcion = 0;
+        boolean salir = false;
+        System.out.println("\n-----MENÚ PROFESORES-----");
+        do {
+            System.out.println("1. Listar aulas"
+                    + "\n2. Crear aula"
+                    + "\n3. Modificar aula"
+                    + "\n4. Eliminar aula"
+                    + "\n5. Salir");
+            opcion = sc.nextInt() - 1;
+            switch (opcion) {
+                case 0:
+                    System.out.println("Listar aulas");
+                    break;
+                case 1:
+                    System.out.println("\nHas escogido añadir una nueva aula. A  continuación escribe la información de la nueva aula");
+                    addLinea(f);
+                    break;
+                case 2:
+                    System.out.println("\nHas escgodio modificar la información de un aula.");
+                    modificaLinea(f);
+                    break;
+                case 3:
+                    System.out.println("\nHas escogido eliminar un aula de la lista.");
+                    eliminaLinea(f);
+                    break;
+                case 4:
+                    System.out.println("\nSaliendo del menú de profesores.\n");
+                    salir = true;
+                    break;
+            }
+        } while (!salir);
+
     }
 
 }
