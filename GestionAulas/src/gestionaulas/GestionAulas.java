@@ -5,7 +5,12 @@ PROYECTO M03
 package gestionaulas;
 
 import java.io.*;
+<<<<<<< HEAD
 import java.util.*;
+=======
+import java.util.ArrayList;
+import java.util.Scanner;
+>>>>>>> main
 
 /**
  *
