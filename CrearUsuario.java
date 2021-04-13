@@ -27,7 +27,6 @@ public class CrearUsuario {
             ObjectOutputStream fichero = new ObjectOutputStream(new FileOutputStream("users.dat"));
             // Creamos un array de Usuario
             //por defeccto todas las posiciones del array son nulos 
-            Usuario[] profesor = new Usuario[5]; 
             
             //creamos un nuevo usuario en la posicion del array 
             System.out.println("|--------CREACION DE USUARIO--------|");
@@ -38,10 +37,10 @@ public class CrearUsuario {
             System.out.print("Dime el password: ");
             String pass = lector.nextLine();
             
-            profesor[0] = new Usuario();
-            profesor[0].role = rol;
-            profesor[0].name = nom;
-            profesor[0].password = pass;
+            usuarios.set(0, new Usuario());
+            usuarios.get(0).role = rol;
+            usuarios.get(0).name = nom;
+            usuarios.get(0).password = pass;
             
            
             //con write escribomos todo el array de usuarios  
