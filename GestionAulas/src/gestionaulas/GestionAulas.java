@@ -32,16 +32,20 @@ public class GestionAulas {
         File ficheroAulas = new File("classroom.txt");
 
         //damos la bienvenida al programa
-        System.out.println("Bienvenidos al programa de gestión de aulas CJK");
+        System.out.println("-------------------------------------------------");
+        System.out.println("|Bienvenidos al programa de gestión de aulas CJK|");
+        System.out.println("-------------------------------------------------");
 
         //menu inicial 
         int opcion = 0;
         boolean salir = false;
         do {
-            System.out.println("\n1. Acceder a cuenta"
+            System.out.println("\n-----MENÚ DE ACCESO-----");
+            System.out.print("1. Acceder a cuenta"
                     + "\n2. Salir"
                     + "\nQue desas hacer: ");
             opcion = sc.nextInt() - 1;
+
             switch (opcion) {
                 case 0:
                     String rol;
@@ -53,7 +57,16 @@ public class GestionAulas {
                     }
                     break;
                 case 1:
-                    salir = true;
+                    Scanner lec = new Scanner(System.in);
+                    System.out.println("\n¿Deseas cerrar el programa? Si/No");
+                    String resp = lec.nextLine().toUpperCase();
+                    if (resp.equals("SI")) {
+                        System.out.println("\nH A S T A   L A   P R Ó X I M A  :D");
+                        salir = true;
+                    } else {
+                        System.out.println("\nVolviendo al menú de acceso...\n");
+                    }
+
                     break;
             }
         } while (!salir);
@@ -67,6 +80,9 @@ public class GestionAulas {
      * @param f
      */
     private static void lectorFicheros(File f) {
+        System.out.println("\n----------------------");
+        System.out.println("|Listado de las aulas|");
+        System.out.println("----------------------\n");
 
         try {
             //inicializamos el lector del fichero
@@ -81,7 +97,7 @@ public class GestionAulas {
                 String linea = lectorFichero.nextLine();
 
                 //describimos las aulas introducidas mediante el objeto fichero
-                //describeAulas(linea);
+                describeAulas(linea);
             }
             //al acabar siempre debemos cerrar el lector
             lectorFichero.close();
@@ -147,9 +163,9 @@ public class GestionAulas {
                     case 6:
                         String bool3 = atributos[i].toUpperCase();
                         if ("SI".equals(bool3)) {
-                            System.out.println("Aula insonorizada: Si");
+                            System.out.println("Aula insonorizada: Si\n");
                         } else if ("NO".equals(bool3)) {
-                            System.out.println("Aula insonorizada: No");
+                            System.out.println("Aula insonorizada: No\n");
                         } else {
                             System.out.println("Información introducida de manera errónea.\n");
                         }
@@ -183,6 +199,9 @@ public class GestionAulas {
         String d5 = lector.nextLine();
         System.out.print("Aula insonorizada (si/no): ");
         String d6 = lector.nextLine();
+        System.out.println("\n------------------------");
+        System.out.println("Aula añadida con éxito");
+        System.out.println("------------------------\n");
 
         // CONVERTIR A MAYUSCULAS  D4,D5,D6
         d4 = d4.toUpperCase();
@@ -293,6 +312,10 @@ public class GestionAulas {
 
             }
 
+            System.out.println("\n--------------------------");
+            System.out.println("Aula modificada con éxito");
+            System.out.println("--------------------------\n");
+
             //cerramos siempre el escritor de fichero al terminar su uso
             writer.close();
 
@@ -350,6 +373,10 @@ public class GestionAulas {
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
         }
+        
+        System.out.println("\n--------------------------");
+        System.out.println("Aula eliminada con éxito");
+        System.out.println("--------------------------\n");
 
     }
 
@@ -385,6 +412,12 @@ public class GestionAulas {
         usuarios.add(user);
     }
 
+    /**
+     * Funcion que procesa el login e indica si son correctos los datos de
+     * usuario
+     *
+     * @return
+     */
     private static String loginUser() {
         Scanner lector = new Scanner(System.in);
         boolean usuarioFound = false;
@@ -392,7 +425,7 @@ public class GestionAulas {
         //pedimos al usuario que introduzca sus datos en caso de no coincidir con ninguno
         //dentro del arraylist de usuarios le indicaremos que ha introducido mal los datos
         do {
-            System.out.print("Introduce tus datos\n"
+            System.out.print("\nIntroduce tus datos\n"
                     + "Username: ");
             String nomUser = lector.nextLine();
             System.out.print("Password: ");
@@ -413,24 +446,28 @@ public class GestionAulas {
         return rol;
     }
 
+    /**
+     * Funcion que muestra al usuario las opciones que puede hacer un usuario
+     * con rol: Admin
+     */
     private static void menuAdmin() {
         int opcion = 0;
         boolean salir = false;
         System.out.println("\n-----MENÚ ADMINISTRADORES-----");
         do {
-            System.out.println("1. Listar usuarios"
+            System.out.print("1. Listar usuarios"
                     + "\n2. Crear usuario"
                     + "\n3. Modificar usuario"
                     + "\n4. Eliminar usuario"
-                    + "\n5. Salir");
+                    + "\n5. Salir"
+                    + "\nEscoge tu opción: ");
             opcion = sc.nextInt() - 1;
             switch (opcion) {
                 case 0:
-                    //funcion listar usuarios
-                    System.out.println("listar usuarios");
+                    listarUsuarios(usuarios);
                     break;
                 case 1:
-                    System.out.println("crear usuario");
+                    crearUsuario();
                     break;
                 case 2:
                     System.out.println("modificar usuario");
@@ -439,7 +476,9 @@ public class GestionAulas {
                     System.out.println("eliminar usuario");
                     break;
                 case 4:
-                    System.out.println("Saliendo del menú de administradores\n");
+                    System.out.println("---------------------------------------");
+                    System.out.println("|Saliendo del menú de administradores.|");
+                    System.out.println("---------------------------------------");
                     salir = true;
                     break;
             }
@@ -447,20 +486,27 @@ public class GestionAulas {
 
     }
 
+    /**
+     * Funcion que muestra al usuario las opcoines que puede hacer un usuario
+     * con rol: Teacher
+     *
+     * @param f
+     */
     private static void menuTeacher(File f) {
         int opcion = 0;
         boolean salir = false;
         System.out.println("\n-----MENÚ PROFESORES-----");
         do {
-            System.out.println("1. Listar aulas"
+            System.out.print("1. Listar aulas"
                     + "\n2. Crear aula"
                     + "\n3. Modificar aula"
                     + "\n4. Eliminar aula"
-                    + "\n5. Salir");
+                    + "\n5. Salir"
+                    + "\nEscoge tu opción: ");
             opcion = sc.nextInt() - 1;
             switch (opcion) {
                 case 0:
-                    System.out.println("Listar aulas");
+                    lectorFicheros(f);
                     break;
                 case 1:
                     System.out.println("\nHas escogido añadir una nueva aula. A  continuación escribe la información de la nueva aula");
@@ -475,11 +521,115 @@ public class GestionAulas {
                     eliminaLinea(f);
                     break;
                 case 4:
-                    System.out.println("\nSaliendo del menú de profesores.\n");
+                    System.out.println("\n----------------------------------");
+                    System.out.println("|Saliendo del menú de profesores.|");
+                    System.out.println("----------------------------------\n");
                     salir = true;
                     break;
             }
         } while (!salir);
+
+    }
+
+    /**
+     * Funcion que permitirá al usuario cera nuevos usuarios de rol Teacher
+     *
+     * @param usuarios
+     */
+    private static void crearUsuario() {
+        Scanner lec1 = new Scanner(System.in);
+        boolean salirNom = false;
+
+        //creamos un nuevo usuario que sera el que ´ñadiremos al final del proceso
+        //al arrayList de usuarios
+        Usuario user = new Usuario();
+
+        // CREAR FICHERO BINARIO
+        try {
+            ObjectOutputStream fichero = new ObjectOutputStream(new FileOutputStream("users.dat"));
+
+            //pedimos los datos del nuevo usuario a crear y los guardamos en los
+            //atributos del objeto Usuario
+            System.out.println("\n|--------CREACIÓN DE USUARIO--------|");
+            System.out.print("Rol: ");
+            user.role = lec1.nextLine();
+
+            do {
+                System.out.print("Nombre de usuario: ");
+                String name = lec1.nextLine();
+                boolean repetido = false;
+
+                for (Usuario usuario : usuarios) {
+                    if (name.equals(usuario.name)) {
+                        repetido = true;
+                    }
+                }
+                
+                if(repetido){
+                    System.out.println("Este nombre de usuario ya existe, por favor pruebe con otro.\n");
+                }else{
+                    user.name = name;
+                    salirNom = true;
+                }
+            } while (!salirNom);
+
+            System.out.print("Contraseña: ");
+            user.password = lec1.nextLine();
+
+            //añadimos al arraylist de usuarios el nuevo usuario "user"
+            usuarios.add(user);
+
+            //con write escribomos todo el array de usuarios  
+            fichero.writeObject(usuarios);
+
+            //cerramos el fichero
+            fichero.close();
+
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un ERROR");
+        }
+
+        //LEER FICHERO BINARIO
+        try {
+            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
+
+            //leemos un objeto del fichero 
+            usuarios = (ArrayList<Usuario>) fichero.readObject();
+
+            Usuario usuarioCreado = usuarios.get(usuarios.size() - 1);
+
+            System.out.println("\n|----------Usuario Creado----------|");
+            System.out.println("Role: " + usuarioCreado.role);
+            System.out.println("Nombre: " + usuarioCreado.name);
+            System.out.println("Password: " + usuarioCreado.password);
+            System.out.println("|-----------------------------------|\n");
+
+            fichero.close();
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un ERROR");
+        }
+        
+        System.out.println("\n------------------------");
+        System.out.println("Usuario creado con éxito");
+        System.out.println("------------------------\n");
+    }
+
+    /**
+     * Funcion que mostrara al user todos los usuarios creados en el programa
+     *
+     * @param usuarios
+     */
+    private static void listarUsuarios(ArrayList<Usuario> usuarios) {
+        System.out.println("\n-------------------------------------");
+        System.out.println("|Lista de los usuarios del programa.|");
+        System.out.println("-------------------------------------\n");
+        for (Usuario usuario : usuarios) {
+            System.out.println("\n|----------Usuario-----------|");
+            System.out.println("Nombre: " + usuario.name);
+            System.out.println("Password: " + usuario.password);
+            System.out.println("Role: " + usuario.role);
+            System.out.println("|----------------------------|\n");
+        }
 
     }
 

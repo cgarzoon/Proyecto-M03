@@ -1,17 +1,17 @@
 aula245,planta baja sin ventanas esta aula dispone con un conjunto de altavoces es la de danza,30,si,30,si,si
-aula251,primera planta con ventanas aula muy amplia que  dispone con un juego de cine ,30,true,30,true,false
-aula252,primera planta con ventanas aula media que dispone con materiales de arte es la de plastica,25,true,25,true,false
-aula253,segunda planta con ventanas aula media que dispone con pequeños puestos de estudio,25,true,25,true,false
-aula254,segunda planta con ventanas y buena ventilacion aula que cuenta con diferentes productos químicos es la de química,30,false,0,false,true
-aula255,segunda planta con ventanas aula que dispone con una gran varieda de vestimentas es la de teatro,30,false,0,true,true
-aula145,planta baja sin ventanas pero con ventilacion es la sala informatica,25,true,25,true,true
-aula351,tercera planta con ventanas único pc del profesorado,30,true,1,true,false
-aula252,segunda planta con ventanas y ventilación laboratorio,20,false,0,false,false
-aula353,tercera planta con ventanas segunda sala informatica,25,true,25,true,true
-aula154,planta baja con ventanas y ventilacion taller,15,false,0,false,true
-aula155,segunda planta sin ventanas con ventilacion sala de proyecciones,40,true,2,true,true
-aula222,primera planta  aula pequeña  sin ventanas es la aula de reuniones de docentes,15,false,0,true,true
-aula12,tercera planta aula muy amplia con muy buena ventilacion es el gimnasio,30,false,0,false,false
-aula340,tercera planta aula muy amplia que dispone de diferentes instrumentos de musica,35,true,1,true,true
-aula1,primera planta aula muy amplia que dispone una gran variedad de libros bliblioteca,60,true,3,false,true
-aula46,segunda planta aula media es la de castigo,20,false,0,false,false
+aula251,primera planta con ventanas aula muy amplia que  dispone con un juego de cine,30,si,30,si,no
+aula252,primera planta con ventanas aula media que dispone con materiales de arte es la de plastica,25,si,25,si,no
+aula253,segunda planta con ventanas aula media que dispone con pequeños puestos de estudio,25,si,25,si,no
+aula254,segunda planta con ventanas y buena ventilacion aula que cuenta con diferentes productos químicos es la de química,30,no,0,no,si
+aula255,segunda planta con ventanas aula que dispone con una gran varieda de vestimentas es la de teatro,30,no,0,si,si
+aula145,planta baja sin ventanas pero con ventilacion es la sala informatica,25,si,25,si,si
+aula351,tercera planta con ventanas único pc del profesorado,30,si,1,si,no
+aula252,segunda planta con ventanas y ventilación laboratorio,20,no,0,no,no
+aula353,tercera planta con ventanas segunda sala informatica,25,si,25,si,si
+aula154,planta baja con ventanas y ventilacion taller,15,no,0,no,si
+aula155,segunda planta sin ventanas con ventilacion sala de proyecciones,40,si,2,si,si
+aula222,primera planta  aula pequeña  sin ventanas es la aula de reuniones de docentes,15,no,0,si,si
+aula12,tercera planta aula muy amplia con muy buena ventilacion es el gimnasio,30,no,0,no,no
+aula340,tercera planta aula muy amplia que dispone de diferentes instrumentos de musica,35,si,1,si,si
+aula1,primera planta aula muy amplia que dispone una gran variedad de libros bliblioteca,60,si,3,no,si
+aula46,segunda planta aula media es la de castigo,20,no,0,no,no
