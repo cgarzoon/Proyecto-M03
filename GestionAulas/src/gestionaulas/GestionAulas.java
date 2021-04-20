@@ -473,10 +473,10 @@ public class GestionAulas {
                     System.out.println("modificar usuario");
                     break;
                 case 3:
-                    System.out.println("eliminar usuario");
+                    eliminarUsuario();
                     break;
                 case 4:
-                    System.out.println("---------------------------------------");
+                    System.out.println("\n---------------------------------------");
                     System.out.println("|Saliendo del menú de administradores.|");
                     System.out.println("---------------------------------------");
                     salir = true;
@@ -625,12 +625,45 @@ public class GestionAulas {
         System.out.println("-------------------------------------\n");
         for (Usuario usuario : usuarios) {
             System.out.println("\n|----------Usuario-----------|");
-            System.out.println("Nombre: " + usuario.name);
-            System.out.println("Password: " + usuario.password);
-            System.out.println("Role: " + usuario.role);
+            System.out.println(" Nombre: " + usuario.name);
+            System.out.println(" Password: " + usuario.password);
+            System.out.println(" Role: " + usuario.role);
             System.out.println("|----------------------------|\n");
         }
 
+    }
+
+    private static void eliminarUsuario() {
+        Scanner l2 = new Scanner(System.in);
+        System.out.println("\n------------------------------");
+        System.out.println("|Borrar usuario del programa.|");
+        System.out.println("------------------------------\n");
+        
+        System.out.print("Introduce el nombre del usuario que deseas eliminar: ");
+        String nombre = l2.nextLine().toUpperCase();
+        
+        for(int i=0; i<usuarios.size();i++){
+            Usuario usuario = usuarios.get(i);
+            String name, resp;
+            name = usuario.name.toUpperCase();
+            if(nombre.equals(name)){
+                System.out.println("Una vez elimines el usuario no podrás recuperarlo, seguro que deseas eliminarlo? si/no");
+                resp = l2.nextLine().toUpperCase();
+                if(resp.equals("SI")){
+                    usuarios.remove(i);
+                    System.out.println("\n------------------------------------");
+                    System.out.println("Usuario "+usuario.name+" eliminado con éxito.");
+                    System.out.println("------------------------------------\n");
+                } else{
+                    System.out.println("\nVolviendo al menú de administradores...\n");
+                }
+                
+                
+            }
+        }
+        
+
+        
     }
 
 }
