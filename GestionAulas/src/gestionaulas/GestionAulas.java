@@ -16,6 +16,8 @@ public class GestionAulas {
     public static Scanner sc = new Scanner(System.in);
 
     static final int atributosAula = 7;
+    
+    static final int atributosCalendario = 3;
 
     static ArrayList<Usuario> usuarios;
 
@@ -29,6 +31,7 @@ public class GestionAulas {
         }
 
         //Creamos el fichero
+        File fichero = new File("calendario.txt");
         File ficheroAulas = new File("classroom.txt");
 
         //damos la bienvenida al programa
@@ -53,7 +56,7 @@ public class GestionAulas {
                     if (rol.equals("Admin")) {
                         menuAdmin();
                     } else if (rol.equals("Teacher")) {
-                        menuTeacher(ficheroAulas);
+                        menuTeacher(ficheroAulas, fichero);
                     }
                     break;
                 case 1:
@@ -182,7 +185,7 @@ public class GestionAulas {
      *
      * @param f
      */
-    public static void addLinea(File f) {
+    private static void addAula(File f) {
         Scanner lector = new Scanner(System.in);
 
         System.out.print("Nombre del aula: ");
@@ -233,7 +236,7 @@ public class GestionAulas {
      *
      * @param f
      */
-    public static void modificaLinea(File f) {
+    private static void modificaAula(File f) {
         Scanner lect = new Scanner(System.in);
         ArrayList<String> lineas = new ArrayList<>();
 
@@ -330,7 +333,7 @@ public class GestionAulas {
      *
      * @param ficheroAulas
      */
-    private static void eliminaLinea(File f) {
+    private static void eliminaAula(File f) {
         Scanner lector = new Scanner(System.in);
 
         // Array para guardar todas las líneas leídas del fichero
@@ -492,7 +495,13 @@ public class GestionAulas {
      *
      * @param f
      */
-    private static void menuTeacher(File f) {
+    /**
+     * Funcion que muestra al usuario las opcoines que puede hacer un usuario
+     * con rol: Teacher
+     *
+     * @param f
+     */
+    private static void menuTeacher(File f, File H) {
         int opcion = 0;
         boolean salir = false;
         System.out.println("\n-----MENÚ PROFESORES-----");
@@ -501,7 +510,10 @@ public class GestionAulas {
                     + "\n2. Crear aula"
                     + "\n3. Modificar aula"
                     + "\n4. Eliminar aula"
-                    + "\n5. Salir"
+                    + "\n5. Introducir contenido al calendario"
+                    + "\n6. Mostrar el calendario"
+                    + "\n7. Agrupar aulas"
+                    + "\n8. Salir"
                     + "\nEscoge tu opción: ");
             opcion = sc.nextInt() - 1;
             switch (opcion) {
@@ -510,22 +522,33 @@ public class GestionAulas {
                     break;
                 case 1:
                     System.out.println("\nHas escogido añadir una nueva aula. A  continuación escribe la información de la nueva aula");
-                    addLinea(f);
+                    addAula(f);
                     break;
                 case 2:
                     System.out.println("\nHas escgodio modificar la información de un aula.");
-                    modificaLinea(f);
+                    modificaAula(f);
                     break;
                 case 3:
                     System.out.println("\nHas escogido eliminar un aula de la lista.");
-                    eliminaLinea(f);
+                    eliminaAula(f);
                     break;
+
                 case 4:
+                    pedirCalendario();
+                    break;
+                case 5:
+                    lectorCal(H);
+                    break;
+                case 6:
+                    agrupaAulas();
+                    break;
+                case 7:
                     System.out.println("\n----------------------------------");
                     System.out.println("|Saliendo del menú de profesores.|");
                     System.out.println("----------------------------------\n");
                     salir = true;
                     break;
+
             }
         } while (!salir);
 
@@ -579,14 +602,14 @@ public class GestionAulas {
             //añadimos al arraylist de usuarios el nuevo usuario "user"
             usuarios.add(user);
 
-            //con write escribomos todo el array de usuarios  
+            //con write escribimos todo el array de usuarios en el fichero users  
             fichero.writeObject(usuarios);
 
             //cerramos el fichero
             fichero.close();
 
         } catch (Exception e) {
-            System.out.println("Ha ocurrido un ERROR");
+            System.out.println("Ha ocurrido un ERROR al abrir el fichero");
         }
 
         //LEER FICHERO BINARIO
@@ -626,13 +649,16 @@ public class GestionAulas {
         for (Usuario usuario : usuarios) {
             System.out.println("\n|----------Usuario-----------|");
             System.out.println(" Nombre: " + usuario.name);
-            System.out.println(" Password: " + usuario.password);
+            asteriscos(usuario.password);
             System.out.println(" Role: " + usuario.role);
             System.out.println("|----------------------------|\n");
         }
 
     }
 
+    /**
+     * Funcion que nos permetira eliminar usuarios del fichero users.dat
+     */
     private static void eliminarUsuario() {
         Scanner l2 = new Scanner(System.in);
         System.out.println("\n------------------------------");
@@ -651,6 +677,15 @@ public class GestionAulas {
                 resp = l2.nextLine().toUpperCase();
                 if(resp.equals("SI")){
                     usuarios.remove(i);
+                    try{
+                        
+                        ObjectOutputStream fichero = new ObjectOutputStream(new FileOutputStream("users.dat"));
+                        
+                        fichero.writeObject(usuarios);
+                        fichero.close();
+                    }catch(Exception e){
+                        System.out.println("Ha ocurrido un ERROR al abrir el fichero");
+                    }
                     System.out.println("\n------------------------------------");
                     System.out.println("Usuario "+usuario.name+" eliminado con éxito.");
                     System.out.println("------------------------------------\n");
@@ -666,4 +701,326 @@ public class GestionAulas {
         
     }
 
+    /**
+     * Funcion que permite agrupar las aulas del fichero classroom.txt
+     */
+    private static void agrupaAulas() {
+        Scanner l3 = new Scanner(System.in);
+        System.out.println("\n------------------------------");
+        System.out.println("|Agrupar aulas del programa.|");
+        System.out.println("------------------------------\n");
+        System.out.println("El programa permite crear un máximo de 5 grupos");
+        
+        int i=0;
+        switch(i){
+            case 0:
+                boolean salir = false;
+                ArrayList Grupo1 = new ArrayList();
+                do{
+                    System.out.print("Introduce la clase que deseas añadir al grupo: ");
+                    String aula = l3.nextLine();
+                    Grupo1.add(aula);
+                    
+                    System.out.println("Quieres introducir mas aulas al grupo? si/no");
+                    String resp = l3.nextLine().toUpperCase();
+                    if(resp.equals("NO")){
+                        salir = true;
+                    }
+                }while(!salir);
+                
+                System.out.println("Grupo 1:");
+                for(int j=0; i<Grupo1.size();j++){
+                    System.out.println("Aula "+i+": "+Grupo1.get(i));
+                }
+                
+                System.out.println("Quieres añadir otro grupo? si/no");
+                String resp1 = l3.nextLine().toUpperCase();
+                if(resp1.equals("SI")){
+                    i++;
+                }else{
+                    System.out.println("Volviendo al menú de Teachers...");
+                }
+                break;
+            case 1:
+                boolean salir1 = false;
+                ArrayList Grupo2 = new ArrayList();
+                do{
+                    System.out.print("Introduce la clase que deseas añadir al grupo: ");
+                    String aula = l3.nextLine();
+                    Grupo2.add(aula);
+                    
+                    System.out.println("Quieres introducir mas aulas al grupo? si/no");
+                    String resp = l3.nextLine().toUpperCase();
+                    if(resp.equals("NO")){
+                        salir1 = true;
+                    }
+                }while(!salir1);
+                
+                System.out.println("Grupo 2:");
+                for(int j=0; i<Grupo2.size();j++){
+                    System.out.println("Aula "+i+": "+Grupo2.get(i));
+                }
+                
+                System.out.println("Quieres añadir otro grupo? si/no");
+                String resp2 = l3.nextLine().toUpperCase();
+                if(resp2.equals("SI")){
+                    i++;
+                }else{
+                    System.out.println("Volviendo al menú de Teachers...");
+                }
+                break;
+            case 2:
+                boolean salir2 = false;
+                ArrayList Grupo3 = new ArrayList();
+                do{
+                    System.out.print("Introduce la clase que deseas añadir al grupo: ");
+                    String aula = l3.nextLine();
+                    Grupo3.add(aula);
+                    
+                    System.out.println("Quieres introducir mas aulas al grupo? si/no");
+                    String resp = l3.nextLine().toUpperCase();
+                    if(resp.equals("NO")){
+                        salir2 = true;
+                    }
+                    
+                }while(!salir2);
+                System.out.println("Grupo 3:");
+                for(int j=0; i<Grupo3.size();j++){
+                    System.out.println("Aula "+i+": "+Grupo3.get(i));
+                }
+                
+                System.out.println("Quieres añadir otro grupo? si/no");
+                String resp3 = l3.nextLine().toUpperCase();
+                if(resp3.equals("SI")){
+                    i++;
+                }else{
+                    System.out.println("Volviendo al menú de Teachers...");
+                }
+                break;
+            case 3:
+                boolean salir3 = false;
+                ArrayList Grupo4 = new ArrayList();
+                do{
+                    System.out.print("Introduce la clase que deseas añadir al grupo: ");
+                    String aula = l3.nextLine();
+                    Grupo4.add(aula);
+                    
+                    System.out.println("Quieres introducir mas aulas al grupo? si/no");
+                    String resp = l3.nextLine().toUpperCase();
+                    if(resp.equals("NO")){
+                        salir3 = true;
+                    }
+                }while(!salir3);
+                
+                System.out.println("Grupo 4:");
+                for(int j=0; i<Grupo4.size();j++){
+                    System.out.println("Aula "+i+": "+Grupo4.get(i));
+                }
+                
+                System.out.println("Quieres añadir otro grupo? si/no");
+                String resp4 = l3.nextLine().toUpperCase();
+                if(resp4.equals("SI")){
+                    i++;
+                }else{
+                    System.out.println("Volviendo al menú de Teachers...");
+                }
+                break;
+            case 4:
+                boolean salir4 = false;
+                ArrayList Grupo5 = new ArrayList();
+                do{
+                    System.out.print("Introduce la clase que deseas añadir al grupo: ");
+                    String aula = l3.nextLine();
+                    Grupo5.add(aula);
+                    
+                    System.out.println("Quieres introducir mas aulas al grupo? si/no");
+                    String resp = l3.nextLine().toUpperCase();
+                    if(resp.equals("NO")){
+                        salir4 = true;
+                    }
+                }while(!salir4);
+                System.out.println("Grupo 5:");
+                for(int j=0; i<Grupo5.size();j++){
+                    System.out.println("Aula "+i+": "+Grupo5.get(i));
+                }
+                break;
+        }
+    }
+    
+    /**
+     * Funcion que permite ocultar la contraseña cuando se listan los usuarios
+     * @param n 
+     */
+    public static void asteriscos(String n){
+            System.out.print(" Password: ");
+            for(int a=0;a<n.length();a++){
+                System.out.print("*");
+            }
+            System.out.println();
+    }
+    
+    /**
+     * Funcion que permite modificar la informacion de los usuarios del fichero users.dat
+     */
+    public static void ModificarUsuario() {
+      String n3, n5;
+
+      Usuario user = new Usuario();
+      try {
+          // lee el fichero user.data
+          ObjectOutputStream fichero = new ObjectOutputStream(new FileOutputStream("users.dat"));
+          Scanner lector = new Scanner(System.in);
+          //pedir usuario
+          System.out.println("\n------------------------------------------");
+          System.out.println("Introduce nombre de Usuario a modificar");
+          System.out.println("············································");
+          String n1 = lector.nextLine();
+
+          for (Usuario usuario : usuarios) {
+              if (n1.toUpperCase().equals(usuario.name.toUpperCase())) {
+                  // MENU EN EL CUAL DEPENDE DE LA OPCION MODIFICA CONTRASEÑA O NOMBRE DE USUARIO
+                  System.out.println("\n------------------------------------------");
+                  System.out.println("Que deseas modificar ?");
+                  System.out.println("a-Nombre de usuario ");
+                  System.out.println("b-Contraseña");
+                  System.out.println("c-Rol");
+                  System.out.println("············································");
+                  n5 = lector.nextLine();
+
+                  switch (n5) {
+                      case "a":
+                          System.out.println("\n------------------------------------------");
+                          System.out.println("Introduce el nuevo nombre de usuario :");
+                          System.out.println("············································");
+                          n3 = lector.nextLine();
+
+                          usuario.name = n3;
+
+                          break;
+
+                      case "b":
+                          System.out.println("\n------------------------------------------");
+                          System.out.println("Introduce la nueva contraseña");
+                          System.out.println("············································");
+                          String n4 = lector.nextLine();
+
+                          usuario.password = n4;
+                          break;
+
+                      case "c":
+                          System.out.println("\n------------------------------------------");
+                          System.out.println("Introduce el nuevo Rol");
+                          System.out.println("············································");
+                          String n9 = lector.nextLine();
+
+                          usuario.role = n9;
+                          break;
+
+                      default:
+                          System.out.println("Error");
+
+                  }
+                  System.out.println("······················");
+              }
+          }
+
+          fichero.writeObject(usuarios);
+          fichero.close();
+      } catch (Exception e) {
+          System.out.println("Ha ocurrido un ERROR");
+      }
+
+    }
+    
+    /*
+    FUNCION EXTRA SPRINT 5: EN EL MENU DEL TEACHER APARECERA ESTA OPCION PARA QUE PUEDA ESCRIBIR Y SE GUARDARA EN UN NUEVO DOCUMENTO.TXT.
+     */
+    private static void pedirCalendario() {
+        File fichero = new File("calendario.txt");
+
+        String f = sc.nextLine().toUpperCase();
+        System.out.println("Dime la fecha (DD/MM/YY): ");
+        String a = sc.nextLine().toUpperCase();
+        System.out.println("Dime la materia: ");
+        String m = sc.nextLine().toUpperCase();
+        System.out.println("Dime tema: ");
+        String t = sc.nextLine().toUpperCase();
+
+        //Convertimos en string las respuestas del docente 
+        String filaCal = a + "," + m + "," + t;
+        //Escribimos los en el documento las cosas que el docente haya apuntado
+        try {
+
+            FileWriter writer = new FileWriter(fichero, true);
+
+            writer.write(filaCal + "\n");
+
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error al crear/escribir en el fichero");
+        }
+
+    }
+
+    /*
+     FUNCION EXTRA SPRINT 5 : LISTA EL CALENDARIO DONDE SE ESCRIBIO PREVIAMENTE.    
+     */
+    private static void llistar(String l) {
+        //separamos la informacion del fichero y la almacenamos en un array
+        String[] atributos = l.split(",");
+
+        //en caso de contener la informacion de todos los atributos necesarios la
+        //funcion pasa a exponerlos, en caso de faltar algun atributo por especificar
+        //la consola imprimira un mensaje de error
+        if (atributos.length == atributosCalendario) {
+            for (int i = 0; i < atributos.length; i++) {
+                switch (i) {
+                    case 0:
+                        System.out.println("Fecha: " + atributos[i]);
+                        break;
+                    case 1:
+                        System.out.println("Materia: " + atributos[i]);
+                        break;
+                    case 2:
+                        System.out.println("Tema: " + atributos[i]);
+                        System.out.println("---------------------");
+                        break;
+                }
+
+            }
+        }
+    }
+
+    /*
+    FUNCION EXTRA SPRINT 5 = LEE EL FICHERO DONDE SE ESCUENTRA EL .TXT DEL CALENDARIO
+     */
+    private static void lectorCal(File H) {
+        System.out.println("\n----------------------");
+        System.out.println("|CALENDARIO|");
+        System.out.println("----------------------\n");
+
+        try {
+            //inicializamos el lector del fichero
+            Scanner lectorFichero = new Scanner(H);
+
+            //le indicamos que mientras el fichero siga teniendo lineas de contenido 
+            //siga haciendo su funcion
+            while (lectorFichero.hasNextLine()) {
+
+                //separamos las lineas del fichero de 1 en 1 y se la pasamos a la
+                //funcion que nos describira la infromacion de ese aula
+                String linea = lectorFichero.nextLine();
+
+                //describimos el calendario 
+                llistar(linea);
+            }
+            //al acabar siempre debemos cerrar el lector
+            lectorFichero.close();
+
+        } catch (Exception ex) {
+
+            System.out.println("Error al abrir o leer el archivo");
+
+        }
+    }
 }
